@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="UchetOborudovaniaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="IstoriaVhoda">
+    <Key>
+      <PropertyRef Name="IdIstoriiVhoda" />
+    </Key>
+    <Property Name="IdIstoriiVhoda" Type="Int32" Nullable="false" />
+    <Property Name="IdSotrudnika" Type="Int32" Nullable="false" />
+    <Property Name="DataVremaPopitkiVhoda" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Status" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Sotrudniki" Relationship="Self.FK_IstoriaVhoda_Sotrudniki" FromRole="IstoriaVhoda" ToRole="Sotrudniki" />
+  </EntityType>
+  <EntityType Name="Oborudovanie">
+    <Key>
+      <PropertyRef Name="IdOborudovania" />
+    </Key>
+    <Property Name="IdOborudovania" Type="Int32" Nullable="false" />
+    <Property Name="Foto" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="SeriyniyNomer" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Naimenovanie" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Opisanie" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="NomerKabineta" Type="Int32" Nullable="false" />
+    <Property Name="Status" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="IdSotrudnika" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Sotrudniki" Relationship="Self.FK_Oborudovanie_Sotrudniki" FromRole="Oborudovanie" ToRole="Sotrudniki" />
+  </EntityType>
+  <EntityType Name="Sotrudniki">
+    <Key>
+      <PropertyRef Name="IdSotrudnika" />
+    </Key>
+    <Property Name="IdSotrudnika" Type="Int32" Nullable="false" />
+    <Property Name="FIO" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Login" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Rol" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="NomerTelefona" Type="Int64" Nullable="false" />
+    <NavigationProperty Name="IstoriaVhoda" Relationship="Self.FK_IstoriaVhoda_Sotrudniki" FromRole="Sotrudniki" ToRole="IstoriaVhoda" />
+    <NavigationProperty Name="Oborudovanie" Relationship="Self.FK_Oborudovanie_Sotrudniki" FromRole="Sotrudniki" ToRole="Oborudovanie" />
+    <NavigationProperty Name="SotrudnikiOfRukovoditeli" Relationship="Self.FK_SotrudnikiOfRukovoditeli_Sotrudniki" FromRole="Sotrudniki" ToRole="SotrudnikiOfRukovoditeli" />
+  </EntityType>
+  <EntityType Name="SotrudnikiOfRukovoditeli">
+    <Key>
+      <PropertyRef Name="IdSvazi" />
+    </Key>
+    <Property Name="IdSvazi" Type="Int32" Nullable="false" />
+    <Property Name="IdSotrudnika" Type="Int32" Nullable="false" />
+    <Property Name="IdRucovoditela" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Sotrudniki" Relationship="Self.FK_SotrudnikiOfRukovoditeli_Sotrudniki" FromRole="SotrudnikiOfRukovoditeli" ToRole="Sotrudniki" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK_IstoriaVhoda_Sotrudniki">
+    <End Role="Sotrudniki" Type="Self.Sotrudniki" Multiplicity="1" />
+    <End Role="IstoriaVhoda" Type="Self.IstoriaVhoda" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sotrudniki">
+        <PropertyRef Name="IdSotrudnika" />
+      </Principal>
+      <Dependent Role="IstoriaVhoda">
+        <PropertyRef Name="IdSotrudnika" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Oborudovanie_Sotrudniki">
+    <End Role="Sotrudniki" Type="Self.Sotrudniki" Multiplicity="1" />
+    <End Role="Oborudovanie" Type="Self.Oborudovanie" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sotrudniki">
+        <PropertyRef Name="IdSotrudnika" />
+      </Principal>
+      <Dependent Role="Oborudovanie">
+        <PropertyRef Name="IdSotrudnika" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SotrudnikiOfRukovoditeli_Sotrudniki">
+    <End Role="Sotrudniki" Type="Self.Sotrudniki" Multiplicity="1" />
+    <End Role="SotrudnikiOfRukovoditeli" Type="Self.SotrudnikiOfRukovoditeli" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sotrudniki">
+        <PropertyRef Name="IdSotrudnika" />
+      </Principal>
+      <Dependent Role="SotrudnikiOfRukovoditeli">
+        <PropertyRef Name="IdSotrudnika" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="UchetOborudovaniaEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="IstoriaVhoda" EntityType="Self.IstoriaVhoda" />
+    <EntitySet Name="Oborudovanie" EntityType="Self.Oborudovanie" />
+    <EntitySet Name="Sotrudniki" EntityType="Self.Sotrudniki" />
+    <EntitySet Name="SotrudnikiOfRukovoditeli" EntityType="Self.SotrudnikiOfRukovoditeli" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <AssociationSet Name="FK_IstoriaVhoda_Sotrudniki" Association="Self.FK_IstoriaVhoda_Sotrudniki">
+      <End Role="Sotrudniki" EntitySet="Sotrudniki" />
+      <End Role="IstoriaVhoda" EntitySet="IstoriaVhoda" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Oborudovanie_Sotrudniki" Association="Self.FK_Oborudovanie_Sotrudniki">
+      <End Role="Sotrudniki" EntitySet="Sotrudniki" />
+      <End Role="Oborudovanie" EntitySet="Oborudovanie" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SotrudnikiOfRukovoditeli_Sotrudniki" Association="Self.FK_SotrudnikiOfRukovoditeli_Sotrudniki">
+      <End Role="Sotrudniki" EntitySet="Sotrudniki" />
+      <End Role="SotrudnikiOfRukovoditeli" EntitySet="SotrudnikiOfRukovoditeli" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

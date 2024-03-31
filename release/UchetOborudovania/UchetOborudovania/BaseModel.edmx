@@ -1,0 +1,316 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище UchetOborudovaniaModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="IstoriaVhoda">
+          <Key>
+            <PropertyRef Name="IdIstoriiVhoda" />
+          </Key>
+          <Property Name="IdIstoriiVhoda" Type="int" Nullable="false" />
+          <Property Name="IdSotrudnika" Type="int" Nullable="false" />
+          <Property Name="DataVremaPopitkiVhoda" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Status" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Oborudovanie">
+          <Key>
+            <PropertyRef Name="IdOborudovania" />
+          </Key>
+          <Property Name="IdOborudovania" Type="int" Nullable="false" />
+          <Property Name="Foto" Type="varbinary(max)" />
+          <Property Name="SeriyniyNomer" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Naimenovanie" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Opisanie" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="NomerKabineta" Type="int" Nullable="false" />
+          <Property Name="Status" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="IdSotrudnika" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Sotrudniki">
+          <Key>
+            <PropertyRef Name="IdSotrudnika" />
+          </Key>
+          <Property Name="IdSotrudnika" Type="int" Nullable="false" />
+          <Property Name="FIO" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Login" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Rol" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="NomerTelefona" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SotrudnikiOfRukovoditeli">
+          <Key>
+            <PropertyRef Name="IdSvazi" />
+          </Key>
+          <Property Name="IdSvazi" Type="int" Nullable="false" />
+          <Property Name="IdSotrudnika" Type="int" Nullable="false" />
+          <Property Name="IdRucovoditela" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_IstoriaVhoda_Sotrudniki">
+          <End Role="Sotrudniki" Type="Self.Sotrudniki" Multiplicity="1" />
+          <End Role="IstoriaVhoda" Type="Self.IstoriaVhoda" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sotrudniki">
+              <PropertyRef Name="IdSotrudnika" />
+            </Principal>
+            <Dependent Role="IstoriaVhoda">
+              <PropertyRef Name="IdSotrudnika" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Oborudovanie_Sotrudniki">
+          <End Role="Sotrudniki" Type="Self.Sotrudniki" Multiplicity="1" />
+          <End Role="Oborudovanie" Type="Self.Oborudovanie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sotrudniki">
+              <PropertyRef Name="IdSotrudnika" />
+            </Principal>
+            <Dependent Role="Oborudovanie">
+              <PropertyRef Name="IdSotrudnika" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SotrudnikiOfRukovoditeli_Sotrudniki">
+          <End Role="Sotrudniki" Type="Self.Sotrudniki" Multiplicity="1" />
+          <End Role="SotrudnikiOfRukovoditeli" Type="Self.SotrudnikiOfRukovoditeli" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sotrudniki">
+              <PropertyRef Name="IdSotrudnika" />
+            </Principal>
+            <Dependent Role="SotrudnikiOfRukovoditeli">
+              <PropertyRef Name="IdSotrudnika" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище UchetOborudovaniaModelContainer">
+          <EntitySet Name="IstoriaVhoda" EntityType="Self.IstoriaVhoda" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Oborudovanie" EntityType="Self.Oborudovanie" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sotrudniki" EntityType="Self.Sotrudniki" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SotrudnikiOfRukovoditeli" EntityType="Self.SotrudnikiOfRukovoditeli" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_IstoriaVhoda_Sotrudniki" Association="Self.FK_IstoriaVhoda_Sotrudniki">
+            <End Role="Sotrudniki" EntitySet="Sotrudniki" />
+            <End Role="IstoriaVhoda" EntitySet="IstoriaVhoda" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Oborudovanie_Sotrudniki" Association="Self.FK_Oborudovanie_Sotrudniki">
+            <End Role="Sotrudniki" EntitySet="Sotrudniki" />
+            <End Role="Oborudovanie" EntitySet="Oborudovanie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SotrudnikiOfRukovoditeli_Sotrudniki" Association="Self.FK_SotrudnikiOfRukovoditeli_Sotrudniki">
+            <End Role="Sotrudniki" EntitySet="Sotrudniki" />
+            <End Role="SotrudnikiOfRukovoditeli" EntitySet="SotrudnikiOfRukovoditeli" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="UchetOborudovaniaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="IstoriaVhoda">
+          <Key>
+            <PropertyRef Name="IdIstoriiVhoda" />
+          </Key>
+          <Property Name="IdIstoriiVhoda" Type="Int32" Nullable="false" />
+          <Property Name="IdSotrudnika" Type="Int32" Nullable="false" />
+          <Property Name="DataVremaPopitkiVhoda" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Status" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Sotrudniki" Relationship="Self.FK_IstoriaVhoda_Sotrudniki" FromRole="IstoriaVhoda" ToRole="Sotrudniki" />
+        </EntityType>
+        <EntityType Name="Oborudovanie">
+          <Key>
+            <PropertyRef Name="IdOborudovania" />
+          </Key>
+          <Property Name="IdOborudovania" Type="Int32" Nullable="false" />
+          <Property Name="Foto" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="SeriyniyNomer" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Naimenovanie" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Opisanie" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NomerKabineta" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IdSotrudnika" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Sotrudniki" Relationship="Self.FK_Oborudovanie_Sotrudniki" FromRole="Oborudovanie" ToRole="Sotrudniki" />
+        </EntityType>
+        <EntityType Name="Sotrudniki">
+          <Key>
+            <PropertyRef Name="IdSotrudnika" />
+          </Key>
+          <Property Name="IdSotrudnika" Type="Int32" Nullable="false" />
+          <Property Name="FIO" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Login" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Rol" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NomerTelefona" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="IstoriaVhoda" Relationship="Self.FK_IstoriaVhoda_Sotrudniki" FromRole="Sotrudniki" ToRole="IstoriaVhoda" />
+          <NavigationProperty Name="Oborudovanie" Relationship="Self.FK_Oborudovanie_Sotrudniki" FromRole="Sotrudniki" ToRole="Oborudovanie" />
+          <NavigationProperty Name="SotrudnikiOfRukovoditeli" Relationship="Self.FK_SotrudnikiOfRukovoditeli_Sotrudniki" FromRole="Sotrudniki" ToRole="SotrudnikiOfRukovoditeli" />
+        </EntityType>
+        <EntityType Name="SotrudnikiOfRukovoditeli">
+          <Key>
+            <PropertyRef Name="IdSvazi" />
+          </Key>
+          <Property Name="IdSvazi" Type="Int32" Nullable="false" />
+          <Property Name="IdSotrudnika" Type="Int32" Nullable="false" />
+          <Property Name="IdRucovoditela" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Sotrudniki" Relationship="Self.FK_SotrudnikiOfRukovoditeli_Sotrudniki" FromRole="SotrudnikiOfRukovoditeli" ToRole="Sotrudniki" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_IstoriaVhoda_Sotrudniki">
+          <End Role="Sotrudniki" Type="Self.Sotrudniki" Multiplicity="1" />
+          <End Role="IstoriaVhoda" Type="Self.IstoriaVhoda" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sotrudniki">
+              <PropertyRef Name="IdSotrudnika" />
+            </Principal>
+            <Dependent Role="IstoriaVhoda">
+              <PropertyRef Name="IdSotrudnika" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Oborudovanie_Sotrudniki">
+          <End Role="Sotrudniki" Type="Self.Sotrudniki" Multiplicity="1" />
+          <End Role="Oborudovanie" Type="Self.Oborudovanie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sotrudniki">
+              <PropertyRef Name="IdSotrudnika" />
+            </Principal>
+            <Dependent Role="Oborudovanie">
+              <PropertyRef Name="IdSotrudnika" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SotrudnikiOfRukovoditeli_Sotrudniki">
+          <End Role="Sotrudniki" Type="Self.Sotrudniki" Multiplicity="1" />
+          <End Role="SotrudnikiOfRukovoditeli" Type="Self.SotrudnikiOfRukovoditeli" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sotrudniki">
+              <PropertyRef Name="IdSotrudnika" />
+            </Principal>
+            <Dependent Role="SotrudnikiOfRukovoditeli">
+              <PropertyRef Name="IdSotrudnika" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="UchetOborudovaniaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="IstoriaVhoda" EntityType="Self.IstoriaVhoda" />
+          <EntitySet Name="Oborudovanie" EntityType="Self.Oborudovanie" />
+          <EntitySet Name="Sotrudniki" EntityType="Self.Sotrudniki" />
+          <EntitySet Name="SotrudnikiOfRukovoditeli" EntityType="Self.SotrudnikiOfRukovoditeli" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <AssociationSet Name="FK_IstoriaVhoda_Sotrudniki" Association="Self.FK_IstoriaVhoda_Sotrudniki">
+            <End Role="Sotrudniki" EntitySet="Sotrudniki" />
+            <End Role="IstoriaVhoda" EntitySet="IstoriaVhoda" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Oborudovanie_Sotrudniki" Association="Self.FK_Oborudovanie_Sotrudniki">
+            <End Role="Sotrudniki" EntitySet="Sotrudniki" />
+            <End Role="Oborudovanie" EntitySet="Oborudovanie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SotrudnikiOfRukovoditeli_Sotrudniki" Association="Self.FK_SotrudnikiOfRukovoditeli_Sotrudniki">
+            <End Role="Sotrudniki" EntitySet="Sotrudniki" />
+            <End Role="SotrudnikiOfRukovoditeli" EntitySet="SotrudnikiOfRukovoditeli" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище UchetOborudovaniaModelContainer" CdmEntityContainer="UchetOborudovaniaEntities">
+          <EntitySetMapping Name="IstoriaVhoda">
+            <EntityTypeMapping TypeName="UchetOborudovaniaModel.IstoriaVhoda">
+              <MappingFragment StoreEntitySet="IstoriaVhoda">
+                <ScalarProperty Name="IdIstoriiVhoda" ColumnName="IdIstoriiVhoda" />
+                <ScalarProperty Name="IdSotrudnika" ColumnName="IdSotrudnika" />
+                <ScalarProperty Name="DataVremaPopitkiVhoda" ColumnName="DataVremaPopitkiVhoda" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Oborudovanie">
+            <EntityTypeMapping TypeName="UchetOborudovaniaModel.Oborudovanie">
+              <MappingFragment StoreEntitySet="Oborudovanie">
+                <ScalarProperty Name="IdOborudovania" ColumnName="IdOborudovania" />
+                <ScalarProperty Name="Foto" ColumnName="Foto" />
+                <ScalarProperty Name="SeriyniyNomer" ColumnName="SeriyniyNomer" />
+                <ScalarProperty Name="Naimenovanie" ColumnName="Naimenovanie" />
+                <ScalarProperty Name="Opisanie" ColumnName="Opisanie" />
+                <ScalarProperty Name="NomerKabineta" ColumnName="NomerKabineta" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="IdSotrudnika" ColumnName="IdSotrudnika" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sotrudniki">
+            <EntityTypeMapping TypeName="UchetOborudovaniaModel.Sotrudniki">
+              <MappingFragment StoreEntitySet="Sotrudniki">
+                <ScalarProperty Name="IdSotrudnika" ColumnName="IdSotrudnika" />
+                <ScalarProperty Name="FIO" ColumnName="FIO" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Rol" ColumnName="Rol" />
+                <ScalarProperty Name="NomerTelefona" ColumnName="NomerTelefona" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SotrudnikiOfRukovoditeli">
+            <EntityTypeMapping TypeName="UchetOborudovaniaModel.SotrudnikiOfRukovoditeli">
+              <MappingFragment StoreEntitySet="SotrudnikiOfRukovoditeli">
+                <ScalarProperty Name="IdSvazi" ColumnName="IdSvazi" />
+                <ScalarProperty Name="IdSotrudnika" ColumnName="IdSotrudnika" />
+                <ScalarProperty Name="IdRucovoditela" ColumnName="IdRucovoditela" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="UchetOborudovaniaModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
